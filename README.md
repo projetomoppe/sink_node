@@ -27,8 +27,8 @@ são salvos no servidor do projeto.
 VCC do módulo -> 5V
 GND do módulo -> GND
 MISO do módulo -> MISO SPI Arduino MEGA 2560 (D50)
-MOSI do módulo -> MISO SPI Arduino MEGA 2560 (D51)
-SCK do módulo -> MISO SPI Arduino MEGA 2560 (D52)
+MOSI do módulo -> MOSI SPI Arduino MEGA 2560 (D51)
+SCK do módulo -> SCK SPI Arduino MEGA 2560 (D52)
 CE do módulo -> D7 Arduino MEGA 2560
 CSN do módulo -> D53 Arduino MEGA 2560
 ```
