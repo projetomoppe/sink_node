@@ -1,3 +1,5 @@
+#define DEBUG
+
 #include <SPI.h>              // SPI
 #include <nRF24L01.h>         // RF24
 #include <RF24.h>
@@ -14,7 +16,7 @@ const int CSpin = 53;
 #define HOST_PORT   (80)
 
 // inicialização do modulo RF24
-RF24 radio(CEpin,CSpin);
+RF24 radio(CEpin, CSpin);
 const uint64_t pipe = 0xF0F0F0F0E1LL; // tunel de conexao
 
 // inicializacao do modulo Wi-Fi
@@ -47,10 +49,12 @@ S_t;
 S_t dadosSensores;
 
 void setup()
-{ 
-  Serial.begin(57600); // comunicacao Serial com o computador
-  Serial.println(F("\r\n----------- PICJr - MOPPE -----------"));
-  Serial.println(F("\r\nIniciando Setup..."));
+{
+  #ifdef DEBUG
+    Serial.begin(57600); // comunicacao Serial com o computador
+    Serial.println(F("\r\n----------- PICJr - MOPPE -----------"));
+    Serial.println(F("\r\nIniciando Setup..."));
+  #endif
   
   // inicializa modulo RF24
   radio.begin();
@@ -58,29 +62,43 @@ void setup()
   radio.startListening();
 
   // seta modo de operacao como estacao
-  if (wifi.setOprToStationSoftAP()) {
-    Serial.println(F("para estacao + softap OK"));
-  } else {
-    Serial.println(F("para estacao + softap ERROR"));
-  }
+  #ifdef DEBUG
+    if (wifi.setOprToStationSoftAP()) {
+      Serial.println(F("para estacao + softap OK"));
+    } else {
+      Serial.println(F("para estacao + softap ERROR"));
+    }
+  #else
+    wifi.setOprToStationSoftAP();
+  #endif
   
   // conecta a rede Wi-Fi especificada
-  if(wifi.joinAP(SSID, PASSWORD)) {
-    Serial.println(F("conexao OK"));
-    Serial.print(F("IP:"));
-    Serial.println(wifi.getLocalIP().c_str());       
-  } else {
-    Serial.println(F("conexao ERROR"));
-  }
+  #ifdef DEBUG
+    if(wifi.joinAP(SSID, PASSWORD)) {
+      Serial.println(F("conexao OK"));
+      Serial.print(F("IP:"));
+      Serial.println(wifi.getLocalIP().c_str());       
+    } else {
+      Serial.println(F("conexao ERROR"));
+    }
+  #else
+    wifi.joinAP(SSID, PASSWORD);
+  #endif
   
   // modo de conexao unica
-  if (wifi.disableMUX()) {
-    Serial.println(F("conexao unica OK"));
-  } else {
-    Serial.println(F("conexao unica ERROR"));
-  }
+  #ifdef DEBUG
+    if (wifi.disableMUX()) {
+      Serial.println(F("conexao unica OK"));
+    } else {
+      Serial.println(F("conexao unica ERROR"));
+    }
+  #else
+    wifi.disableMUX();
+  #endif
   
-  Serial.println(F("Setup Finalizado!"));
+  #ifdef DEBUG
+    Serial.println(F("Setup Finalizado!"));
+  #endif
 } // fecha void setup()
 
 // envia dados GET
@@ -95,47 +113,51 @@ void loop()
       if(ok) {
         enviaDados();
         
-        Serial.print("dadosSensores.ID = ");
-        Serial.println(dadosSensores.ID);
-        Serial.print("dadosSensores.ICOS_INF = ");
-        Serial.println(dadosSensores.ICOS_INF);
-        Serial.print("dadosSensores.ICOS_SUP = ");
-        Serial.println(dadosSensores.ICOS_SUP);
-        Serial.print("dadosSensores.NIVEL = ");
-        Serial.println(dadosSensores.NIVEL);
-        Serial.print("dadosSensores.LAT_NEG = ");
-        Serial.println(dadosSensores.LAT_NEG);
-        Serial.print("dadosSensores.LAT_DEG = ");
-        Serial.println(dadosSensores.LAT_DEG);
-        Serial.print("dadosSensores.LAT_BILLIONTHS = ");
-        Serial.println(dadosSensores.LAT_BILLIONTHS);
-        Serial.print("dadosSensores.LNG_NEG = ");
-        Serial.println(dadosSensores.LNG_NEG);
-        Serial.print("dadosSensores.LNG_DEG = ");
-        Serial.println(dadosSensores.LNG_DEG);
-        Serial.print("dadosSensores.LNG_BILLIONTHS = ");
-        Serial.println(dadosSensores.LNG_BILLIONTHS);
-        Serial.print("dadosSensores.ELEVACAO = ");
-        Serial.println(dadosSensores.ELEVACAO);
-        Serial.print("dadosSensores.ANO = ");
-        Serial.println(dadosSensores.ANO);
-        Serial.print("dadosSensores.MES = ");
-        Serial.println(dadosSensores.MES);
-        Serial.print("dadosSensores.DIA = ");
-        Serial.println(dadosSensores.DIA);
-        Serial.print("dadosSensores.HORA = ");
-        Serial.println(dadosSensores.HORA);
-        Serial.print("dadosSensores.MINUTO = ");
-        Serial.println(dadosSensores.MINUTO);
-        Serial.print("dadosSensores.SEGUNDO = ");
-        Serial.println(dadosSensores.SEGUNDO);
-        Serial.println();
+        #ifdef DEBUG
+          Serial.print("dadosSensores.ID = ");
+          Serial.println(dadosSensores.ID);
+          Serial.print("dadosSensores.ICOS_INF = ");
+          Serial.println(dadosSensores.ICOS_INF);
+          Serial.print("dadosSensores.ICOS_SUP = ");
+          Serial.println(dadosSensores.ICOS_SUP);
+          Serial.print("dadosSensores.NIVEL = ");
+          Serial.println(dadosSensores.NIVEL);
+          Serial.print("dadosSensores.LAT_NEG = ");
+          Serial.println(dadosSensores.LAT_NEG);
+          Serial.print("dadosSensores.LAT_DEG = ");
+          Serial.println(dadosSensores.LAT_DEG);
+          Serial.print("dadosSensores.LAT_BILLIONTHS = ");
+          Serial.println(dadosSensores.LAT_BILLIONTHS);
+          Serial.print("dadosSensores.LNG_NEG = ");
+          Serial.println(dadosSensores.LNG_NEG);
+          Serial.print("dadosSensores.LNG_DEG = ");
+          Serial.println(dadosSensores.LNG_DEG);
+          Serial.print("dadosSensores.LNG_BILLIONTHS = ");
+          Serial.println(dadosSensores.LNG_BILLIONTHS);
+          Serial.print("dadosSensores.ELEVACAO = ");
+          Serial.println(dadosSensores.ELEVACAO);
+          Serial.print("dadosSensores.ANO = ");
+          Serial.println(dadosSensores.ANO);
+          Serial.print("dadosSensores.MES = ");
+          Serial.println(dadosSensores.MES);
+          Serial.print("dadosSensores.DIA = ");
+          Serial.println(dadosSensores.DIA);
+          Serial.print("dadosSensores.HORA = ");
+          Serial.println(dadosSensores.HORA);
+          Serial.print("dadosSensores.MINUTO = ");
+          Serial.println(dadosSensores.MINUTO);
+          Serial.print("dadosSensores.SEGUNDO = ");
+          Serial.println(dadosSensores.SEGUNDO);
+          Serial.println();
+        #endif
       }
     }
   }
   else {
     // caso nao existam mensagens
-    // Serial.println(F("NAO HA MENSAGENS DISPOSINIVEIS"));
+    #ifdef DEBUG
+      Serial.println(F("NAO HA MENSAGENS DISPOSINIVEIS"));
+    #endif
   }
 }
 
@@ -148,11 +170,15 @@ String floatToString(float x, byte precision = 2) {
 void enviaDados()
 {
   // cria conexao TCP com servidor
-  if (wifi.createTCP(HOST_NAME, HOST_PORT)) {
-    Serial.println(F("servidor tcp OK"));
-  } else {
-    Serial.println(F("servidor tcp ERROR"));
-  }
+  #ifdef DEBUG
+    if (wifi.createTCP(HOST_NAME, HOST_PORT)) {
+      Serial.println(F("servidor tcp OK"));
+    } else {
+      Serial.println(F("servidor tcp ERROR"));
+    }
+  #else
+    wifi.createTCP(HOST_NAME, HOST_PORT);
+  #endif
   
   // monta o path do GET
   String elevacao_str = floatToString(10.0);
@@ -201,17 +227,14 @@ void enviaDados()
   char httpGET[300];
   temp_request.toCharArray(httpGET, 300);
   
-  // realiza a conexao com o servidor e envia os dados 
-  if (wifi.send((const uint8_t*)httpGET, strlen(httpGET))) {
-    Serial.println(F("Dados enviados ao servidor!"));
-  } else {
-    Serial.println(F("FALHA AO ENVIAR AO SERVIDOR"));
-  }
-  
-  // libera a conexao TCP criada
-//  if (wifi.releaseTCP()) {
-//    Serial.println(F("libera tcp OK"));
-//  } else {
-//    Serial.println(F("libera tcp ERROR"));
-//  }
+  // realiza a conexao com o servidor e envia os dados
+  #ifdef DEBUG
+    if (wifi.send((const uint8_t*)httpGET, strlen(httpGET))) {
+      Serial.println(F("Dados enviados ao servidor!"));
+    } else {
+      Serial.println(F("FALHA AO ENVIAR AO SERVIDOR"));
+    }
+  #else
+    wifi.send((const uint8_t*)httpGET, strlen(httpGET));
+  #endif
 }
