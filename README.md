@@ -79,6 +79,8 @@ para comunicação com um ou mais dispositivos periféricos de forma rápida em 
 Esta foi a maneira encontrada para estabilizar o funcionamento do módulo, de modo a obter leituras consistentes.
 Capacitores possuem a capacidade de amenizar ou eliminar ruídos.
 
+![Alt text](/NRF24_Capacitor_VCC_GND.jpg?raw=true "Capacitor entre o VCC e o GND do NRF24L01")
+
 ## Biblioteca WeeESP8266 (Funções e Construtores)
 
 - #define SSID  "sua-rede-wireless" : Define o nome do Ponto de Acesso (Wi-Fi) que será utilizado.
