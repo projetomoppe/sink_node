@@ -10,6 +10,8 @@ e envia este dados para um servidor na Internet que irá emitir as notificaçõe
 - Arduino MEGA 2560;
 - Módulo NRF24L01;
 - Módulo Wi-Fi ESP2866;
+- Módulo Display LCD 16x2;
+- Potenciômetro;
 - Resistores para divisor de tensão;
 - Jumpers.
 
@@ -18,7 +20,8 @@ e envia este dados para um servidor na Internet que irá emitir as notificaçõe
 Os dados recebidos pelo módulo NRF24L01 são armazenados em uma *struct*.
 Estes dados são então utilizados para a criação de uma requisição **HTTP GET** que será realizada pelo
 módulo ESP8266. A cada novo registro de dados recebido, a requisição é enviada e os dados
-são salvos no servidor do projeto.
+são salvos no servidor do projeto. Além disse, o estado do rio e o valor da leitura do nível fornecido pelo sensor ultrassônico
+são exibidos no display LCD.
 
 ## Pinagem dos dispositivos
 
@@ -42,10 +45,28 @@ RX do módulo -> divisor de tensão (3.3V) -> TX1 (D18) Arduino MEGA 2560
 RST e CH_PD do módulo -> resistor de 1K Ohm -> 3.3V
 ```
 
+- Módulo Display LCD 16x2:
+```
+Vdd -> 5V
+Vss -> GND
+V0 -> Pino central do potenciômetro (controle de back light)
+RS -> Pino D12 Arduino MEGA 2560
+RW -> GND
+E -> Pino D11 Arduino MEGA 2560
+D4 -> Pino D5 Arduino MEGA 2560
+D5 -> Pino D4 Arduino MEGA 2560
+D6 -> Pino D3 Arduino MEGA 2560
+D7 -> Pino D2 Arduino MEGA 2560
+A -> 5V
+K -> GND
+D0 a D3 -> Não conectados
+```
+
 ## Construído com
 
-- https://github.com/maniacbug/RF24/ - Arduino driver para nRF24L01
-- https://github.com/itead/ITEADLIB_Arduino_WeeESP8266 - WeeESP8266 utilizada no módulo Wi-Fi.
+- https://github.com/maniacbug/RF24/ - Arduino driver para nRF24L01;
+- https://github.com/itead/ITEADLIB_Arduino_WeeESP8266 - WeeESP8266 utilizada no módulo Wi-Fi;
+- Biblioteca LiquidCrystal - Para o Display LCD -> Vem instalado com a IDE do Arduino.
 
 ## Observações
 
@@ -107,6 +128,23 @@ Capacitores possuem a capacidade de amenizar ou eliminar ruídos.
 - radio.read(&dadosSensores, sizeof(dadosSensores));
   - bool RF24::read ( void * buf, uint8_t len ). Lê o pacote. Retorna o último pacore lido. O tamanho dos dados lidos
   é o tamanho fixo do pacote.
+  
+## LiquidCrystal - Display LCD (Funções e Construtores)
+
+- LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+  - Cria a instância "lcd" e informa os pinos onde o módulo foi instalado no Arduino.
+  
+- lcd.begin(16, 2);
+  - Inicializa o display LCD e define o número de colunas e linhas.
+  
+- lcd.clear();
+  - Limpa a tela do display.
+  
+- lcd.setCursor(2, 0);
+  - Posiciona o cursor na coluna e linha informados. Nesse caso, posicionou-se o cursor na coluna 2 e na linha 0.
+  
+- lcd.print("PICJr MOPPE");
+  - Imprime algum texto no display LCD. Nesse caso, "PICJr MOPPE".
 
 ## Outras Funções
 
