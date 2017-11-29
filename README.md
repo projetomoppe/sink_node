@@ -62,6 +62,10 @@ K -> GND
 D0 a D3 -> Não conectados
 ```
 
+## Pinagem dos dispositivos
+- O circuito sink_node pode ser observado na imagem abaixo:
+![Alt text](/sink_node.png?raw=true "Circuito sink_node")
+
 ## Construído com
 
 - https://github.com/maniacbug/RF24/ - Arduino driver para nRF24L01;
